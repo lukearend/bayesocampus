@@ -1,9 +1,9 @@
 bayesocampus
 ============
 
-<a href="thinking_rat">
-    <img src="http://payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg" width="324px" height="267" alt="thinking rat"
-         title="lukearend/ndnd" align="right" />
+<a href="http://payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg">
+    <img src="http://payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg" width="364px" height="300" alt="thinking rat"
+         title="I was going to tell a joke about epistemological skepticism, but then I realized I don't know any." align="right" />
 </a>
 
 ~~A cauldron of Bayesian witchcraft for rat mind-reading~~
