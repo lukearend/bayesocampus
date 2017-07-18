@@ -2,7 +2,7 @@ bayesocampus
 ============
 
 <a href="thinking_rat">
-    <img src="payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg" width="365px" height="300" alt="thinking rat"
+    <img src="http://cargocollective.com/henriikkapollanen/Thinking-Rat" width="365px" height="300" alt="thinking rat"
          title="lukearend/ndnd" align="right" />
 </a>
 
@@ -12,7 +12,7 @@ This code is maintained by Luke Arend, working in the Johnson laboratory at Beth
 
 This code builds tuning curves from raw spike data and performs visualization and Bayesian neural decoding. This can be done in a stimulus space of an arbitrary number of dimensions. Matlab is required to run the code (written in 2016a).
 
-Image: "Thinking Rat" by [Henriikka Pöllänen](cargocollective.com/henriikkapollanen/).
+Image: "Thinking Rat" by [Henriikka Pöllänen](http://cargocollective.com/henriikkapollanen).
 
 Getting set up
 --------------
