@@ -10,7 +10,7 @@ bayesocampus
 
 A sandbox for fully-Bayesian neural decoding.
 
-This code is maintained by Luke Arend, working in the Johnson laboratory at Bethel University.
+This code is maintained by Luke Arend and the members of the Johnson laboratory at Bethel University.
 
 This code builds tuning curves from raw spike data and performs visualization and Bayesian neural decoding. This can be done in a stimulus space of an arbitrary number of dimensions. Matlab is required to run the code (written in 2016a).
 
