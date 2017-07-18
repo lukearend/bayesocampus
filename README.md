@@ -3,7 +3,7 @@ bayesocampus
 
 <a href="http://payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg">
     <img src="http://payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg" width="364px" height="300" alt="thinking rat"
-         title="I was going to tell a joke about epistemological skepticism, but then I realized I don't know any." align="right" />
+         title="&quot;I was going to tell a joke about my epistemological skepticism, but then I realized I don't know any.&quot;" align="right" />
 </a>
 
 ~~A cauldron of Bayesian witchcraft for rat mind-reading~~
