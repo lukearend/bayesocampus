@@ -2,7 +2,7 @@ bayesocampus
 ============
 
 <a href="thinking_rat">
-    <img src="http://payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg" width="365px" height="300" alt="thinking rat"
+    <img src="http://payload72.cargocollective.com/1/8/260757/3749466/Henkka_maalaus-9.jpg" width="324px" height="267" alt="thinking rat"
          title="lukearend/ndnd" align="right" />
 </a>
 
