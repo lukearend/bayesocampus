@@ -32,7 +32,7 @@ Loading the neural data from a recording session assumes an Eichenbaum-style dat
 	* _units_: 1 x K struct where each cell has two fields and K is the number of units:
 		* _name_: unit name.
 		* _ts_: s x 1 array containing spike timestamps for s spikes.
-		* _rawLEDs_: M x N array containing ground-truth stimulus data, where M is the number of samples and N is the number of stimuli recorded (dimensionality of the stimulus space).
+	* _rawLEDs_: M x N array containing ground-truth stimulus data, where M is the number of samples and N is the number of stimuli recorded (dimensionality of the stimulus space).
 
 Use the function _load\_data\_xy()_ to load x-y neural data.
 
