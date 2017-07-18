@@ -6,6 +6,8 @@ bayesocampus
          title="lukearend/ndnd" align="right" />
 </a>
 
+~~A cauldron of Bayesian witchcraft for rat mind-reading~~
+
 A sandbox for fully-Bayesian neural decoding.
 
 This code is maintained by Luke Arend, working in the Johnson laboratory at Bethel University.
