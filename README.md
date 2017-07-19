@@ -48,7 +48,7 @@ Computing information content for tuning curves
 
 Use _get\_IC\_curves()_ to compute an information content map for a tuning curve or set of tuning curves. As a measure of information content at each location, this finds the KL divergence between the posterior over firing rate at that location and the posterior if firing rate is averaged across location.
 
-Note that this can only be used on Bayesian tuning curves (ones constructed using _build\_NB\_tuning\_curves()_).
+Note that this can only be used on Bayesian tuning curves.
 
 Visualizing curves
 ------------------
