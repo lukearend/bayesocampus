@@ -39,7 +39,7 @@ Use the function _load\_data\_xy()_ to load x-y neural data.
 Building tuning curves
 ----------------------
 
-Use _build\_tuning\_curves()_ to construct tuning curves from neural data. This can build tuning curves either according to the classical method (a simple estimate of the mean firing rate at each location) or according to the fully-Bayesian method (a sequential Bayesian estimate of a distribution over firing rate, using a gamma-distributed prior).
+Use _build\_tuning\_curves()_ to construct tuning curves from neural data. This can build tuning curves either according to the Poisson encoding model (a simple estimate of the mean firing rate at each location) or the negative binomial encoding model (a sequential Bayesian estimate of a distribution over firing rate, using a gamma-distributed prior).
 
 For more theory and detail on this method, see [manuscript in progress].
 
@@ -48,7 +48,7 @@ Computing information content for tuning curves
 
 Use _get\_IC\_curves()_ to compute an information content map for a tuning curve or set of tuning curves. As a measure of information content at each location, this finds the KL divergence between the posterior over firing rate at that location and the posterior if firing rate is averaged across location.
 
-Note that this can only be used on Bayesian tuning curves.
+Note that this can only be used on Bayesian tuning curves (those generated under the negative binomial encoding model).
 
 Visualizing curves
 ------------------
