@@ -5,7 +5,9 @@ addpath('src')
 %% Load the data.
 file_path = '../EichenbaumData/AJF023/EF3/AJF023EF3SpksEvs.mat';
 [spikes,X,t,sample_rate] = load_data_xy(file_path);
-%X = X(1,:); % For one-dimensional testing.
+
+%X = X(1,:); % For testing on one-dimensional data.
+%X = [X; X(1,:)]; % For testing on three-dimensional data.
 
 %% Build the tuning curves.
 t_start = t(1);
