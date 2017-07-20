@@ -1,4 +1,4 @@
-function [coords,varargout] = build_tuning_curves(type,spikes,X,t,...
+function [coords,varargout] = build_tuning_curves(spikes,X,t,...
     sample_rate,t_start,t_end,bin_size,sigma,f_base,min_t_occ)
 %{
 Build tuning curves from spiking data via a sequential Bayesian estimate of
@@ -20,7 +20,7 @@ a distribution over firing rate (using a gamma-distributed prior).
 		t_start: vector of start times for sampling windows over which to
         construct tuning curves.
 		t_end: vector of end times for sampling windows over which to
-        construct tuning curves (must be same length as t_start).
+        construct tuning curves (must have same length as t_start).
 		bin_size: length-N vector containing the bin size to use for each
         stimulus dimension.
 		sigma: length-N vector containing the bandwidth along each
@@ -44,7 +44,7 @@ a distribution over firing rate (using a gamma-distributed prior).
 		lambda: (N+1)-dimensional array of mean firing rate for each bin,
         where the size of the first dimension is the number of units.
     
-        (if 'type' is 'poisson')
+        (if f_base and min_t_occ are not supplied)
 
         -or-
 
@@ -52,27 +52,14 @@ a distribution over firing rate (using a gamma-distributed prior).
         where the size of the first dimension is the number of units.
         beta: N-dimensional array of beta parameter for each bin.
     
-        (if 'type' is 'negative_binomial')
+        (if f_base and min_t_occ are supplied)
 %}
 
-% Check for errors up front.
-EXPECTED_FOR_POISSON = 9;
-EXPECTED_FOR_NEGATIVE_BINOMIAL = 11;
-if strcmp(type,'poisson')
-    if nargin ~= EXPECTED_FOR_POISSON
-        fprintf(['Tuning curve type ''%s'' expected %d inputs, got %d'...
-            ' instead.\n'],type,EXPECTED_FOR_POISSON,nargin);
-        return;
-    end
-elseif strcmp(type,'negative_binomial')
-    if nargin ~= EXPECTED_FOR_NEGATIVE_BINOMIAL
-        fprintf(['Tuning curve type ''%s'' expected %d inputs, got %d'...
-            ' instead.\n'],type,EXPECTED_FOR_NEGATIVE_BINOMIAL,nargin);
-        return;
-    end
+% Discern which encoding model to use based on the number of arguments.
+if nargin == 8
+    type_is_poisson = true;
 else
-    fprintf('Tuning curve type ''%s'' not recognized.\n',type);
-    return;
+    type_is_poisson = false;
 end
 
 % Only use ground-truth data from the specified intervals.
@@ -112,9 +99,8 @@ t_occ = convn(t_occ,G,'same');
 
 t_occ(empties) = nan;
 
-% Decide which type of tuning curve to construct.
 K = length(spikes); % Number of units.
-if strcmp(type,'poisson')
+if type_is_poisson
     lambda = zeros([K occ_size]);
 else
     % Make a Bayesian estimate of the parameters for a gamma distribution
@@ -150,7 +136,7 @@ for i = 1:K
     % Smooth spike counts.
     n = convn(n,G,'same');
     
-    if strcmp(type,'poisson')
+    if type_is_poisson
         mean_firing_rate = n./t_occ;
         
         lambda(i,assign_mask) = mean_firing_rate(:);
@@ -161,7 +147,7 @@ for i = 1:K
     end
 end
 
-if strcmp(type,'poisson')
+if type_is_poisson
     varargout{1} = lambda;
 else
     varargout{1} = alpha;

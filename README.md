@@ -58,5 +58,4 @@ Use _plot\_curves()_ to visualize a set of tuning curves, information content cu
 Decoding neural activity
 ------------------------
 
-[in progress].
-
+Use _bayesian\_decode()_ to perform Bayesian decoding on spiking data. This produces a posterior distribution over stimulus space for each decoding timestep. This function accepts either Poisson- or negative binomial-based tuning curves.

@@ -13,14 +13,14 @@ bin_size = [3 3];
 f_base = 2;
 min_t_occ = 0.5;
 
-[~,lambda] = build_tuning_curves('poisson',spikes,X,t,sample_rate,t_start,t_end,bin_size,sigma);
-[coords,alpha,beta] = build_tuning_curves('negative_binomial',spikes,X,t,sample_rate,t_start,t_end,bin_size,sigma,f_base,min_t_occ);
+[~,lambda] = build_tuning_curves(spikes,X,t,sample_rate,t_start,t_end,bin_size,sigma);
+[coords,alpha,beta] = build_tuning_curves(spikes,X,t,sample_rate,t_start,t_end,bin_size,sigma,f_base,min_t_occ);
 
 %%
 IC_curves = get_IC_curves(alpha,beta,f_base,min_t_occ);
 
 %%
-K = size(lambda,1);
+K = size(alpha,1);
 for i = 1:K
     subplot(3,1,1);
     plot_curves('tuning_curve',coords,lambda(i,:,:));
@@ -31,6 +31,28 @@ for i = 1:K
     subplot(3,1,3);
     plot_curves('IC_curve',coords,IC_curves(i,:,:));
     title(sprintf('Information content curve %d of %d',i,K));
+    
+    waitforbuttonpress;
+end
+
+%%
+t_start = 1000:0.25:1010;
+t_end = (1000:0.25:1010) + 0.25;
+ 
+poiss_posterior = bayesian_decode(spikes,t_start,t_end,lambda);
+nb_posterior = bayesian_decode(spikes,t_start,t_end,alpha,beta);
+
+%%
+M = size(nb_posterior,1);
+for i = 1:M
+    t = t_start(i);
+    
+    subplot(2,1,1);
+    plot_curves('posterior',coords,poiss_posterior(i,:,:));
+    title(sprintf('Poisson-based decoded posterior at t = %.2f',t));
+    subplot(2,1,2);
+    plot_curves('posterior',coords,nb_posterior(i,:,:));
+    title(sprintf('Negative binomial-based decoded posterior at t = %.2f',t));
     
     waitforbuttonpress;
 end
