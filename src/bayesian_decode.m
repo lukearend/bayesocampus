@@ -60,11 +60,24 @@ end
 
 tau = t_end - t_start; % Decoding timesteps.
 
-% Find the empties.
-empties = isnan(squeeze(alpha(1,:,:)));
+% Get the number of stimulus dimensions from tuning curve size.
+N = length(size(alpha)) - 1;
 
-occ_size = size(empties);   % Size of the stimulus space (in bins).
-N = length(occ_size);   % Number of stimulus dimensions.
+% Get the size of the occupancy space in bins.
+if N == 1
+    occ_size = size(alpha,2);
+
+    index_mask = true(occ_size,1);
+else
+    tmp = size(alpha);
+    occ_size = tmp(2:end);
+
+    index_mask = true(occ_size);
+end
+
+% Find the empties.
+empties = isnan(alpha(1,index_mask));
+
 k = numel(empties); % Number of bins in stimulus space.
 
 % Loop over occupancy space, performing decoding on each bin.

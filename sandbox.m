@@ -1,11 +1,13 @@
+%% Set things up.
 clear
 addpath('src')
 
-%%
+%% Load the data.
 file_path = '../EichenbaumData/AJF023/EF3/AJF023EF3SpksEvs.mat';
 [spikes,X,t,sample_rate] = load_data_xy(file_path);
+%X = X(1,:); % For one-dimensional testing.
 
-%%
+%% Build the tuning curves.
 t_start = t(1);
 t_end = t(end);
 sigma = [3 3];
@@ -16,10 +18,10 @@ min_t_occ = 0.5;
 [~,lambda] = build_tuning_curves(spikes,X,t,sample_rate,t_start,t_end,bin_size,sigma);
 [coords,alpha,beta] = build_tuning_curves(spikes,X,t,sample_rate,t_start,t_end,bin_size,sigma,f_base,min_t_occ);
 
-%%
+%% Get information content curves.
 IC_curves = get_IC_curves(alpha,beta,f_base,min_t_occ);
 
-%%
+%% Page through the tuning curves and information content curves.
 K = size(alpha,1);
 for i = 1:K
     subplot(3,1,1);
@@ -35,14 +37,15 @@ for i = 1:K
     waitforbuttonpress;
 end
 
-%%
-t_start = 1000:0.25:1010;
-t_end = (1000:0.25:1010) + 0.25;
+%% Perform neural decoding.
+T = 30;
+t_start = 1000:0.25:1000 + T;
+t_end = (1000:0.25:1000 + T) + 0.25;
  
 poiss_posterior = bayesian_decode(spikes,t_start,t_end,lambda);
 nb_posterior = bayesian_decode(spikes,t_start,t_end,alpha,beta);
 
-%%
+%% Page through the decoded posterior across time.
 M = size(nb_posterior,1);
 for i = 1:M
     t = t_start(i);
