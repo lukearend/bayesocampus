@@ -1,9 +1,9 @@
 %% Set things up.
 clear
-addpath('src')
+addpath('../src')
 
 %% Load the data.
-file_path = '../EichenbaumData/AJF023/EF3/AJF023EF3SpksEvs.mat';
+file_path = '../../EichenbaumData/AJF023/EF3/AJF023EF3SpksEvs.mat';
 [spikes,X,t,sample_rate] = load_data_xy(file_path);
 
 %X = X(1,:); % For testing on one-dimensional data.
@@ -40,9 +40,11 @@ for i = 1:K
 end
 
 %% Perform neural decoding.
-T = 30;
-t_start = 1000:0.25:1000 + T;
-t_end = (1000:0.25:1000 + T) + 0.25;
+t_0 = 1000;
+t_f = 1030;
+t_step = 0.25;
+t_start = t_0:t_step:t_f;
+t_end = (t_0:t_step:t_f) + t_step;
  
 poiss_posterior = bayesian_decode(spikes,t_start,t_end,lambda);
 nb_posterior = bayesian_decode(spikes,t_start,t_end,alpha,beta);

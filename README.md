@@ -6,9 +6,9 @@ bayesocampus
          title="&quot;I was going to tell a joke about my epistemological skepticism, but then I realized I don't know any.&quot;" align="right" />
 </a>
 
-~~A cauldron of Bayesian witchcraft for rat mind-reading~~
+~~_a cauldron of Bayesian witchcraft for rat mind-reading_~~
 
-A sandbox for fully-Bayesian neural decoding.
+_a sandbox for fully-Bayesian neural decoding_
 
 This code is maintained by Luke Arend and the members of the Johnson laboratory at Bethel University.
 
