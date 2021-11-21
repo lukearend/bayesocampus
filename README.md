@@ -8,11 +8,11 @@ bayesocampus
 
 ~~_a cauldron of Bayesian witchcraft for rat mind-reading_~~
 
-_a sandbox for fully-Bayesian neural decoding_
+_a sandbox for Bayesian neural decoding_
 
 This code is maintained by Luke Arend and the members of the Johnson laboratory at Bethel University.
 
-The codebase contains utilities for building tuning curves from raw spike data, visualizing the encoding model, and performing Bayesian neural decoding. This can be done in a stimulus space of an arbitrary number of dimensions. The code is intended to run in [MATLAB](https://www.mathworks.com/product/ltc/matlab.html) (written in version 2016a).
+The codebase contains utilities for building tuning curves from raw spike data, visualizing the encoding model, and performing Bayesian neural decoding. This can be done in a stimulus space of arbitrary dimensionality. The code is intended to run in [MATLAB](https://www.mathworks.com/product/ltc/matlab.html) (written in version 2016a).
 
 Image: "Thinking Rat" by [Henriikka Pöllänen](http://cargocollective.com/henriikkapollanen).
 
@@ -40,8 +40,6 @@ Building tuning curves
 ----------------------
 
 Use _build\_tuning\_curves()_ to construct tuning curves from neural data. This can build tuning curves either according to the Poisson encoding model (a simple estimate of the mean firing rate at each location) or the negative binomial encoding model (a sequential Bayesian estimate of a distribution over firing rate, using a gamma-distributed prior).
-
-For more theory and detail on this method, see [manuscript in progress].
 
 Computing information content for tuning curves
 -----------------------------------------------

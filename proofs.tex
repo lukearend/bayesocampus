@@ -1,0 +1,237 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+
+\setlength{\oddsidemargin}{.1in}
+\setlength{\textwidth}{6.3in}
+\setlength{\textheight}{8.9in}
+\setlength{\topmargin}{-.5in}
+
+\begin{document}
+
+\section{Gamma distribution as the conjugate prior for a Poisson likelihood}
+\label{a:conjugate_derivation}
+Here we show that the gamma distribution is the conjugate prior for a Poisson likelihood used in Bayes' theorem; that is, choosing a gamma-distributed prior also yields a gamma-distributed posterior if the likelihood is a Poisson distribution.
+
+Assume a series of observations $\{n_1, n_2, \ldots, n_M\}$ are independent and identically distributed from a Poisson distribution $f_{Poisson(\lambda)}(n)$. This gives a Bayesian likelihood term
+
+\begin{align}
+P(\{n_m\}\,|\,\lambda) &= \prod_{m = 1}^{M} P(n_m\,|\,\lambda) \\[5pt]
+&= \prod_{m = 1}^{M} \frac{e^{-\lambda} \lambda^{n_m}}{n_m!} \\[5pt]
+&= \frac{e^{-M\lambda} \lambda^{\sum_{m = 1}^{M} n_m}}{\prod_{m = 1}^{M} n_m!}.
+\end{align}
+
+We choose the prior to be a gamma distribution over $\lambda$ with shape and rate parameters $\alpha, \beta$:
+
+\begin{equation}
+P(\lambda) = \frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda^{\alpha - 1} e^{-\beta \lambda}.
+\end{equation}
+
+Bayes' theorem gives the posterior
+
+\begin{align}
+P(\lambda\,|\,\{n_m\}) &= \frac{P(\{n_m\}\,|\,\lambda) P(\lambda)}{\int_{\lambda' = 0}^{\infty} P(\{n_m\}\,|\,\lambda') P(\lambda') \, d\lambda'} \\[5pt]
+&= \frac{\frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda^{\sum_{m = 1}^{M} n_m + \alpha - 1} e^{-(M + \beta) \lambda}}{\int_{\lambda' = 0}^{\infty} \frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda'^{\sum_{m = 1}^{M} n_m + \alpha - 1} e^{-(M + \beta) \lambda'} \, d\lambda'}.
+\label{e:eq32}
+\end{align}
+
+The denominator of the above expression is an integral of the form
+
+\begin{equation}
+\label{e:eq33}
+c \int x^a e^{bx} \, dx
+\end{equation}
+
+where $c = \frac{\beta^{\alpha}}{\Gamma(\alpha)}$, $a = \sum_{m = 1}^{M} n_m + \alpha - 1$, $b = -(M + \beta)$, and $x = \lambda'$. This integral can be treated by iteratively applying integration by parts:
+
+\begin{align}
+\int x^a e^{bx} \, dx &= \frac{1}{b} x^a e^{bx} - \frac{a}{b} x^{a - 1} e^{bx} \, dx \\[5pt]
+&= \frac{1}{b} x^a e^{bx} - \frac{a}{b}(\frac{1}{b} x^{a - 1} e^{bx} - \frac{a - 1}{b}\int x^{a - 2} e^{bx} \, dx) \\[5pt]
+&= \frac{1}{b} x^a e^{bx} - \frac{a}{b}\Big[\frac{1}{b} x^{a - 1} e^{bx} - \frac{a - 1}{b}(\frac{1}{b} x^{a - 2} e^{bx} \int x^{a - 3} e^{bx} \, dx)\Big] \\[5pt]
+&\ldots.  \nonumber
+\end{align}
+
+Rewriting and combining terms, we see that the process of integration by parts proceeds indefinitely like so:
+
+\begin{align}
+\int x^a e^{bx} \, dx &= \frac{1}{b} x^a e^{bx} - \frac{a}{b^2} x^{a - 1} e^{bx} + \frac{a(a - 1)}{b^3} x^{a - 2} e^{bx} - \frac{a(a - 1)(a - 2)}{b^4} x^{a - 3} e^{bx} + \ldots \nonumber \\[5pt]
+&+ \frac{a(a - 1) \ldots (a - a)}{b^{a + 2}} e^{bx} + \ldots.
+\end{align}
+
+Note that the last term written above is in fact zero, and all terms after it vanish as well. So we can rewrite our integral as the sum
+
+\begin{equation}
+\int x^a e^{bx} \, dx = \sum_{n = 0}^{a} (-1)^n \frac{a!}{b^{n + 1} (a - n)!} x^{a - n} e^{bx}.
+\end{equation}
+
+Substituting our original symbols for the placeholders a, b, c, and x into expression (\ref{e:eq33}) and evaluating the integral on the limits 0 to $\infty$ gives
+
+\begin{align}
+\label{e:eq39}
+&\frac{\beta^{\alpha}}{\Gamma(\alpha)} \int_{\lambda' = 0}^{\infty} \lambda'^{\sum_{m = 1}^{M} n_m + \alpha - 1} e^{-(M + \beta) \lambda'} \, d\lambda' \nonumber \\[5pt]
+= &\frac{\beta^{\alpha}}{\Gamma(\alpha)} \sum_{n = 0}^{N + \alpha - 1} (-1)^n \frac{(N + \alpha - 1)!}{\Big[-(M + \beta)\Big]^{n + 1} (N + \alpha - 1 - n)!} \lambda'^{N + \alpha - 1 - n} e^{-(M + \beta)\lambda'}\Big|_{\lambda' = 0}^{\infty},
+\end{align}
+
+where we have let $N = \sum_{m = 1}^{M} n_m$. To evaluate the right hand side of the above equation, we can first note that the lower bound of the limit vanishes at $\lambda' = 0$. We can compute the upper bound by noting that the final two terms after the fraction bar are of the form
+
+\begin{equation}
+x^a e^{-bx},
+\end{equation}
+
+where $a = N + \alpha - 1 - n$, $b = M + \beta$, and $x = \lambda'$. Its limit as $x \to \infty$ can be evaluated using the Taylor series expansion of the exponential function:
+
+\begin{align}
+\lim_{x \to \infty} x^a e^{-bx} &= \lim_{x \to \infty} \frac{x^a}{e^{bx}} \\[5pt]
+&= \lim_{x \to \infty} \frac{x^a}{\sum_{n = 0}^{\infty} \frac{b^n x^n}{n!}} \\[5pt]
+&= \lim_{x \to \infty} \frac{x^a}{\frac{b^x x^x}{x!}} \\[5pt]
+&= \lim_{x \to \infty} \frac{x^a x!}{(bx)^x}.
+\end{align}
+
+Since the $x^x$ term in the denominator increases more rapidly than the x! term in the numerator,
+
+\begin{equation}
+\lim_{x \to \infty} x^a e^{-bx} = 0.
+\end{equation}
+
+Thus it appears at first that the entire sum $\sum_{n = 0}^{N + \alpha - 1}$ in equation (\ref{e:eq39}) collapses to zero! This is not the case, however: the single term in the sum where $N + \alpha - 1 - n = 0$ leaves $\lambda'^{N + \alpha - 1 - n} e^{-(M + \beta)\lambda'}\Big|_{\lambda' = 0}^{\infty}$ undefined. We see that at the lower bound, the $\lambda'$ term is of the form
+
+\begin{align}
+\lim_{\lambda' \to 0} \lambda'^0 &= \lim_{\lambda' \to 0} 1 \\[5pt]
+&= 1,
+\end{align}
+
+so
+
+\begin{align}
+\lambda'^{N + \alpha - 1 - n} e^{-(M + \beta)\lambda'}\Big|_{\lambda' = 0}^{\infty} &= e^{-(M + \beta)\lambda'}\Big|_{\lambda' = 0}^{\infty} \\[5pt]
+&= -1.
+\end{align}
+
+We now see that the sum in the right hand side of equation (\ref{e:eq39}) is nonzero for the single term where $n = N + \alpha - 1$, and that this term is equal to
+
+\begin{align}
+\frac{\beta^{\alpha}}{\Gamma(\alpha)} (-1)^{N + \alpha - 1} \frac{(N + \alpha - 1)!}{(-1)^{N + \alpha} (M + \beta)^{N + \alpha}}(-1).
+\end{align}
+
+Noting that all (-1) terms in the above expression cancel with one another, we find that both sides of equation (\ref{e:eq39}), and thus also the denominator in equation (\ref{e:eq32}), are equivalent to
+
+\begin{equation}
+\label{e:eq51}
+\frac{\beta^{\alpha}}{(M + \beta)^{N + \alpha}}\frac{\Gamma(N + \alpha)}{\Gamma(\alpha)}.
+\end{equation}
+
+Substituting this back into equation (\ref{e:eq32}) gives 
+
+\begin{align}
+P(\lambda\,|\,\{n_m\}) &= \frac{\frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda^{N + \alpha - 1} e^{-(M + \beta) \lambda}}{\frac{\beta^{\alpha}}{\Gamma(\alpha)}\frac{\Gamma(N + \alpha)}{(M + \beta)^{N + \alpha}}} \\[5pt]
+&= \frac{(M + \beta)^{N + \alpha}}{\Gamma(N + \alpha)} \lambda^{N + \alpha - 1} e^{-(M + \beta) \lambda} \\[5pt]
+&= f_{gamma(N + \alpha,M + \beta)}(\lambda).
+\end{align}
+
+Altogether, then, we see that for a series of sequential observations $\{n_1, n_2, \ldots, n_M\}$, Bayes' theorem
+
+\begin{equation}
+P(\lambda\,|\,\{n_m\}) = \frac{P(\{n_m\}\,|\,\lambda) P(\lambda)}{\int_{\lambda' = 0}^{\infty} P(\{n_m\}\,|\,\lambda') P(\lambda') \, d\lambda'}
+\end{equation}
+
+is equivalent to
+
+\begin{equation}
+f_{gamma(\sum_{m = 1}^{M} n_m + \alpha,M + \beta)}(\lambda) = \frac{\Big[\prod_{m = 1}^{M} f_{Poisson(\lambda)}(n_m)\Big] f_{gamma(\alpha,\beta)}(\lambda)}{\int_{\lambda' = 0}^{\infty} \Big[\prod_{m = 1}^{M} f_{Poisson(\lambda')}(n_m)\Big] f_{gamma(\alpha,\beta)}(\lambda') \, d\lambda'}
+\end{equation}
+
+for a Poisson likelihood and a gamma-distributed prior. Note that this gives a posterior distribution of the same type as the prior distribution. Therefore, the conjugate prior to a Poisson likelihood is a gamma distribution.
+
+\section{Mode of a gamma distribution}
+\label{a:mode_derivation}
+Here we derive the expression for the mode of a gamma distribution as a function of its parameters.
+
+A gamma distribution over $\lambda$ with shape and rate parameters $\alpha,\beta$ is given by the probability density function
+
+\begin{equation}
+f_{gamma(\alpha,\beta)}(\lambda) = \frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda^{\alpha - 1} e^{-\beta\lambda}.
+\end{equation}
+
+To find the maximum we take the partial derivative with respect to $\lambda$ and set it equal to zero:
+
+\begin{align}
+\frac{\partial f_{gamma(\alpha,\beta)}(\lambda)}{\partial \lambda} &= \frac{\partial}{\partial \lambda} \Big(\frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda^{\alpha - 1} e^{-\beta\lambda}\Big) \\[5pt]
+&= \frac{\beta^{\alpha}}{\Gamma(\alpha)} \Big[(\alpha - 1)\lambda^{\alpha - 2} e^{-\beta\lambda} - \beta\lambda^{\alpha - 1} e^{-\beta\lambda}\Big] \\[5pt]
+&= 0.
+\end{align}
+
+Since $\frac{\beta^{\alpha}}{\Gamma(\alpha)}$ is assumed to be nonzero, this relation is satisfied when
+
+\begin{equation}
+(\alpha - 1)\lambda^{\alpha - 2} e^{-\beta\lambda} - \beta\lambda^{\alpha - 1} e^{-\beta\lambda} = 0;
+\end{equation}
+
+that is, when
+
+\begin{align}
+(\alpha - 1)\lambda^{\alpha - 2} e^{-\beta\lambda} &= \beta\lambda^{\alpha - 1} e^{-\beta\lambda} \\[5pt]
+(\alpha - 1) &= \beta\lambda
+\end{align}
+
+or when
+
+\begin{equation}
+\frac{\alpha - 1}{\beta} = \lambda.
+\end{equation}
+
+So we take $\hat\lambda = \frac{\alpha - 1}{\beta}$ to be the mode of a gamma distribution over $\lambda$.
+
+\section{Negative binomial distribution as a gamma-Poisson mixture}
+\label{a:mixture_derivation}
+Here we show that a continuous mixture of Poisson distributions where the mixing distribution is a gamma distribution yields a negative binomial distribution.
+
+Consider the continuous mixture for positive $\lambda$ of a Poisson distribution over $n$ with mean rate $\lambda$ and a gamma distribution over $\lambda$ with shape and rate parameters $\alpha,\beta$:
+
+\begin{align}
+\int_{\lambda = 0}^{\infty} f_{Poisson(\lambda)}(n) f_{gamma(\alpha,\beta)}(\lambda) \, d\lambda &= \int_{\lambda = 0}^{\infty} \frac{\lambda^n e^{-\lambda}}{n!} \frac{\beta^{\alpha}}{\Gamma(\alpha)} \lambda^{\alpha - 1} e^{-\beta\lambda} \, d\lambda \\[5pt]
+&= \frac{\beta^{\alpha}}{n!\,\Gamma(\alpha)} \int_{\lambda = 0}^{\infty} \lambda^{\alpha + n - 1} e^{-(1 + \beta)\lambda} \, d\lambda.
+\label{e:eq58}
+\end{align}
+
+The right hand side of the above equation contains an integral of the form dealt with in equations (\ref{e:eq33}-\ref{e:eq51}). Using the same approach as before, we find that
+
+\begin{equation}
+\int_{\lambda = 0}^{\infty} \lambda^{\alpha + n - 1} e^{-(1 + \beta)\lambda} \, d\lambda = (n + \alpha - 1)!\,(1 + \beta)^{-(\alpha + n)}.
+\end{equation}
+
+Substituting this into the right hand side of equation (\ref{e:eq58}) and performing further manipulations gives
+
+\begin{align}
+\frac{\beta^{\alpha}}{n!\,\Gamma(\alpha)} (n + \alpha - 1)!\,(1 + \beta)^{-(\alpha + n)} &= \frac{\Gamma(\alpha + n)}{n!\,\Gamma(\alpha)} \frac{\beta^{\alpha + n}}{(1 + \beta)^{\alpha + n} \beta^n} \\[5pt]
+&= \frac{\Gamma(\alpha + n)}{n!\,\Gamma(\alpha)} \Big(\frac{\beta}{1 + \beta}\Big)^{\alpha + n} \Big(\frac{1}{\beta}\Big)^n.
+\label{e:eq61}
+\end{align}
+
+Isolating and performing manipulations on the two rightmost terms of the above equation gives
+
+\begin{align}
+\Big(\frac{\beta}{1 + \beta}\Big)^{\alpha + n} \Big(\frac{1}{\beta}\Big)^n &= \Big(\frac{\beta}{1 + \beta}\Big)^{\alpha} \Big(\frac{\beta}{1 + \beta}\Big)^n \Big(\frac{1}{\beta}\Big)^n \\[5pt]
+&= \Big(\frac{\beta}{1 + \beta}\Big)^{\alpha} \Big(\frac{1}{1 + \beta}\Big)^n \\[5pt]
+&= \Big(\frac{1}{1 + \beta}\Big)^n \Big(1 - \frac{1}{1 + \beta}\Big)^{\alpha},
+\end{align}
+
+once it is seen that $\frac{\beta}{1 + \beta} = \frac{1 + \beta - 1}{1 + \beta} = 1 - \frac{1}{1 - \beta}$.
+
+Substituting this back into the right hand side of equation (\ref{e:eq61}) and reducing further, we have
+
+\begin{align}
+\frac{\Gamma(\alpha + n)}{n!\,\Gamma(\alpha)} \Big(\frac{1}{1 + \beta}\Big)^n \Big(1 - \frac{1}{1 + \beta}\Big)^{\alpha} &= \frac{(n + \alpha - 1)!}{n!\,(\alpha - 1)!} \Big(\frac{1}{1 + \beta}\Big)^n \Big(1 - \frac{1}{1 + \beta}\Big)^{\alpha} \\[5pt]
+&= \binom{n + \alpha - 1}{n} \Big(\frac{1}{1 + \beta}\Big)^n \Big(1 - \frac{1}{1 + \beta}\Big)^{\alpha} \\[5pt]
+&= f_{NB(\alpha,\frac{1}{1 + \beta})}(n).
+\end{align}
+
+The result is a negative binomial distribution with parameters $\alpha,\frac{1}{1 + \beta}$. So, altogether we can write
+
+\begin{equation}
+\int_{\lambda = 0}^{\infty} f_{Poisson(\lambda)}(n) f_{gamma(\alpha,\beta)}(\lambda) \, d\lambda = f_{NB(\alpha,\frac{1}{1 + \beta})}(n).
+\end{equation}
+
+Therefore, a continuous mixture of Poisson distributions where the mixing distribution is a gamma distribution yields a negative binomial distribution.
+
+\end{document}
